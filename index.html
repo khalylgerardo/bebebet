@@ -44,8 +44,16 @@ button{font:inherit;cursor:pointer}
 
 /* hero */
 .hero{position:relative;border-radius:24px;overflow:hidden;aspect-ratio:4/4.3;background:#ddd}
-.hero img{width:100%;height:100%;object-fit:cover;display:block}
-.hero .ov{position:absolute;inset:auto 0 0 0;padding:64px 20px 20px;background:linear-gradient(transparent,rgba(20,16,32,.82));color:#fff}
+.hero .sl{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;opacity:0;transform:scale(1.06);transition:opacity 1.2s ease,transform 6s ease-out}
+.hero .sl.on{opacity:1;transform:scale(1)}
+.hero .ov{position:absolute;inset:auto 0 0 0;padding:64px 20px 20px;background:linear-gradient(transparent,rgba(20,16,32,.82));color:#fff;transition:opacity .7s ease}
+.hero .ov.off{opacity:0;pointer-events:none}
+.hero .cap{position:absolute;left:0;right:0;bottom:0;padding:48px 16px 18px;background:linear-gradient(transparent,rgba(20,16,32,.6));text-align:center;color:#fff;font-family:"Bricolage Grotesque",system-ui,sans-serif;font-weight:700;font-size:19px;text-shadow:0 2px 12px rgba(0,0,0,.45);opacity:0;transform:translateY(8px);transition:opacity .7s ease,transform .7s ease}
+.hero .cap.on{opacity:1;transform:none}
+.hero .dots{position:absolute;top:12px;right:12px;display:flex;gap:6px;z-index:2}
+.hero .dots button{width:8px;height:8px;padding:0;border:0;border-radius:99px;background:rgba(255,255,255,.55);transition:width .3s,background .3s}
+.hero .dots button.on{width:22px;background:#fff}
+@media (prefers-reduced-motion:reduce){.hero .sl{transition:opacity .6s ease;transform:none!important}}
 .hero h1{font-size:32px;font-weight:800;line-height:1.05}
 .hero p{margin:6px 0 0;opacity:.9;font-size:15px}
 .chip-date{display:inline-flex;gap:6px;align-items:center;margin-top:12px;background:rgba(255,255,255,.18);backdrop-filter:blur(6px);padding:6px 12px;border-radius:99px;font-size:13px;font-weight:500}
@@ -229,8 +237,14 @@ textarea{resize:none;height:70px}
   </div>
 
   <div class="hero">
-    <img src="foto.jpg" alt="Thiago e Laura">
-    <div class="ov">
+    <img class="sl on" src="foto.jpg" alt="Thiago e Laura">
+    <img class="sl" src="historia-1.jpg" alt="Thiago e Laura no casamento" data-cap="Era uma vez um sim…" loading="lazy">
+    <img class="sl" src="historia-2.jpg" alt="Thiago e Laura esperando o bebê" data-cap="…a espera mais doce…" loading="lazy">
+    <img class="sl" src="historia-3.jpg" alt="Thiago e Laura com o bebê no colo" data-cap="…o primeiro abraço…" loading="lazy">
+    <img class="sl" src="historia-4.jpg" alt="A família passeando" data-cap="…e a família que vai crescer 💙💗" loading="lazy">
+    <div class="dots" id="heroDots"></div>
+    <div class="cap" id="heroCap"></div>
+    <div class="ov" id="heroOv">
       <h1>Bento ou Eva?</h1>
       <p>Thiago e Laura estão esperando um bebê, e a família inteira vai palpitar.</p>
       <div class="chip-date">🎈 Revelação: <span id="revData">a definir</span></div>
@@ -357,5 +371,28 @@ textarea{resize:none;height:70px}
 <div class="toast" id="toast"></div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
 <script src="script.js"></script>
+<script>
+/* fotos do topo passando em sequência */
+(function () {
+  const sl = [...document.querySelectorAll('.hero .sl')], ov = document.getElementById('heroOv'),
+        cap = document.getElementById('heroCap'), dots = document.getElementById('heroDots');
+  if (sl.length < 2) return;
+  let i = 0, timer;
+  dots.innerHTML = sl.map((_, k) => `<button aria-label="Foto ${k + 1}"${k ? '' : ' class="on"'}></button>`).join('');
+  const bs = [...dots.children];
+  function show(n) {
+    i = (n + sl.length) % sl.length;
+    sl.forEach((s, k) => s.classList.toggle('on', k === i));
+    bs.forEach((b, k) => b.classList.toggle('on', k === i));
+    ov.classList.toggle('off', i !== 0);
+    cap.classList.remove('on');
+    const k = i; if (k) setTimeout(() => { if (i !== k) return; cap.textContent = sl[k].dataset.cap || ''; cap.classList.add('on'); }, 350);
+  }
+  // a primeira foto fica 5,5 s; as outras, 4,2 s. Tocar num pontinho pula para a foto e reinicia o tempo.
+  function agenda() { clearTimeout(timer); timer = setTimeout(() => { if (!document.hidden) show(i + 1); agenda(); }, i === 0 ? 5500 : 4200); }
+  bs.forEach((b, k) => b.onclick = () => { show(k); agenda(); });
+  agenda();
+})();
+</script>
 </body>
 </html>
