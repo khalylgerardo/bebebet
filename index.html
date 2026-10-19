@@ -1,0 +1,361 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>BEBEBET · Bento ou Eva?</title>
+<meta name="description" content="Bolão do bebê do Thiago e da Laura: dê seu palpite!">
+<meta property="og:title" content="BEBEBET · Bento ou Eva?">
+<meta property="og:description" content="Bolão do bebê do Thiago e da Laura. Dê seu palpite!">
+<meta property="og:image" content="https://bebebet.brager.com.br/og-whatsapp.jpg">
+<meta property="og:image:width" content="1000">
+<meta property="og:image:height" content="525">
+<link rel="icon" type="image/svg+xml" href="icone.svg">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&display=swap" rel="stylesheet">
+<style>
+:root{
+  color-scheme: light;
+  --bg:#FBF6EF; --card:#FFFFFF; --ink:#1E1B2E; --muted:#6B6679; --line:#ECE5DA;
+  --boy:#2F6BEA; --boy-soft:#E3ECFF; --girl:#E8457A; --girl-soft:#FFE3EC;
+  --mint:#1F9B6E; --mint-soft:#DDF4EA; --gold:#F2B33D;
+  --r:18px;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"DM Sans",system-ui,sans-serif;font-size:16px;line-height:1.45;-webkit-font-smoothing:antialiased}
+.num{font-variant-numeric:tabular-nums}
+h1,h2,h3,.disp{font-family:"Bricolage Grotesque",system-ui,sans-serif;letter-spacing:-.02em;margin:0}
+.wrap{max-width:560px;margin:0 auto;padding:0 16px 48px}
+button{font:inherit;cursor:pointer}
+
+/* faixa prévia */
+.preview{background:var(--ink);color:#fff;font-size:13px;text-align:center;padding:8px 12px}
+.preview b{color:var(--gold)}
+
+/* topo */
+.top{display:flex;align-items:center;justify-content:space-between;padding:16px 0 12px}
+.logo{font-family:"Bricolage Grotesque",system-ui,sans-serif;font-weight:800;font-size:26px;letter-spacing:-.04em}
+.logo .b1{color:var(--boy)} .logo .b2{color:var(--girl)}
+.logoimg{height:46px;width:auto;display:block}
+.live{font-size:12px;font-weight:700;color:var(--mint);background:var(--mint-soft);padding:5px 10px;border-radius:99px;display:flex;gap:6px;align-items:center}
+.live i{width:7px;height:7px;border-radius:50%;background:var(--mint);animation:pulse 1.6s infinite}
+@keyframes pulse{50%{opacity:.25}}
+
+/* hero */
+.hero{position:relative;border-radius:24px;overflow:hidden;aspect-ratio:4/4.3;background:#ddd}
+.hero img{width:100%;height:100%;object-fit:cover;display:block}
+.hero .ov{position:absolute;inset:auto 0 0 0;padding:64px 20px 20px;background:linear-gradient(transparent,rgba(20,16,32,.82));color:#fff}
+.hero h1{font-size:32px;font-weight:800;line-height:1.05}
+.hero p{margin:6px 0 0;opacity:.9;font-size:15px}
+.chip-date{display:inline-flex;gap:6px;align-items:center;margin-top:12px;background:rgba(255,255,255,.18);backdrop-filter:blur(6px);padding:6px 12px;border-radius:99px;font-size:13px;font-weight:500}
+
+/* placar */
+.sec{margin-top:28px}
+.sec-h{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:12px}
+.sec-h h2{font-size:22px;font-weight:700}
+.sec-h small{color:var(--muted);font-size:13px}
+.board{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:16px}
+.teams{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.team{border-radius:14px;padding:14px;position:relative}
+.team.boy{background:var(--boy-soft)} .team.girl{background:var(--girl-soft)}
+.team .t{font-weight:700;font-size:14px;display:flex;align-items:center;gap:6px}
+.team.boy .t{color:var(--boy)} .team.girl .t{color:var(--girl)}
+.team .odd{font-family:"Bricolage Grotesque",system-ui,sans-serif;font-weight:800;font-size:34px;line-height:1;margin:10px 0 2px}
+.team .odd small{font-size:16px;font-weight:700}
+.team .lbl{font-size:12px;color:var(--muted)}
+.team .meta{margin-top:10px;font-size:13px;display:flex;justify-content:space-between}
+.potbig{text-align:center;padding:4px 0 16px;margin-bottom:14px;border-bottom:1px dashed var(--line)}
+.potbig span{display:block;font-size:13px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.06em}
+.potbig b{display:block;font-family:"Bricolage Grotesque",system-ui,sans-serif;font-weight:800;font-size:44px;line-height:1.1;margin:4px 0}
+.potbig small{font-size:13px;color:var(--mint);font-weight:700}
+.bar{height:10px;border-radius:99px;background:var(--girl);overflow:hidden;margin:16px 0 8px;display:flex}
+.bar span{background:var(--boy);transition:width .5s}
+.barlbl{display:flex;justify-content:space-between;font-size:12px;color:var(--muted)}
+.pot{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:14px;border-top:1px dashed var(--line);padding-top:14px}
+.pot div{text-align:center}
+.pot b{display:block;font-family:"Bricolage Grotesque",system-ui,sans-serif;font-size:20px}
+.pot span{font-size:12px;color:var(--muted)}
+.pot .fr b{color:var(--mint)}
+
+/* cupom de aposta */
+.slip{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:18px;box-shadow:0 10px 30px -18px rgba(30,27,46,.35)}
+label.f{display:block;font-size:13px;font-weight:700;margin:16px 0 8px}
+label.f:first-child{margin-top:0}
+input[type=text],input[type=number],textarea{width:100%;font:inherit;padding:13px 14px;border:1.5px solid var(--line);border-radius:12px;background:#FDFBF8;color:var(--ink);outline:none}
+input:focus,textarea:focus{border-color:var(--ink)}
+textarea{resize:none;height:70px}
+.pick{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.pick button{border:2px solid var(--line);background:#fff;border-radius:14px;padding:14px 10px;font-weight:700;font-size:16px;display:flex;flex-direction:column;align-items:center;gap:4px;transition:.15s}
+.pick button .e{font-size:26px}
+.pick button.on.boy{border-color:var(--boy);background:var(--boy-soft);color:var(--boy)}
+.pick button.on.girl{border-color:var(--girl);background:var(--girl-soft);color:var(--girl)}
+.vals{display:flex;flex-wrap:wrap;gap:8px}
+.vals button{border:1.5px solid var(--line);background:#fff;border-radius:99px;padding:9px 15px;font-weight:700;font-size:14px}
+.vals button.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+#outro{margin-top:8px;display:none}
+.prize{display:grid;gap:8px}
+.prize button{text-align:left;border:2px solid var(--line);background:#fff;border-radius:14px;padding:12px 14px;display:flex;gap:12px;align-items:center}
+.prize button .e{font-size:24px}
+.prize button b{display:block;font-size:15px}
+.prize button span{font-size:13px;color:var(--muted)}
+.prize button.on{border-color:var(--mint);background:var(--mint-soft)}
+.prize.off{opacity:.45;pointer-events:none}
+.ret{margin-top:16px;border-radius:14px;background:#F6F1E8;padding:14px;font-size:14px}
+.ret .row{display:flex;justify-content:space-between;margin:2px 0}
+.ret .big{font-family:"Bricolage Grotesque",system-ui,sans-serif;font-weight:800;font-size:22px}
+.ret .fr{color:var(--mint);font-weight:700}
+.ret em{display:block;font-style:normal;font-size:12px;color:var(--muted);margin-top:6px}
+.cta{width:100%;margin-top:16px;border:0;border-radius:14px;padding:16px;font-weight:700;font-size:17px;color:#fff;background:var(--ink)}
+.cta:disabled{opacity:.35;cursor:not-allowed}
+.err{color:var(--girl);font-size:13px;margin-top:8px;min-height:1em}
+
+/* pix */
+.pix{display:none;text-align:center}
+.pix .ok{font-size:44px}
+.pix h3{font-size:22px;margin:6px 0}
+.pix p{color:var(--muted);font-size:14px;margin:4px 0 14px}
+.key{display:flex;gap:8px;align-items:center;background:#F6F1E8;border-radius:12px;padding:10px 10px 10px 14px;text-align:left}
+.key div{flex:1;min-width:0}
+.key small{display:block;font-size:11px;color:var(--muted)}
+.key b{font-size:15px;word-break:break-all}
+.key button{border:0;background:var(--ink);color:#fff;border-radius:10px;padding:10px 14px;font-weight:700;font-size:14px}
+.amount{font-family:"Bricolage Grotesque",system-ui,sans-serif;font-weight:800;font-size:36px;margin:14px 0 4px}
+.ghost{background:none;border:0;color:var(--muted);text-decoration:underline;margin-top:14px;font-size:14px}
+
+/* mural */
+.filters{display:flex;gap:6px;margin-bottom:10px}
+.filters button{border:1.5px solid var(--line);background:#fff;border-radius:99px;padding:6px 12px;font-size:13px;font-weight:700}
+.filters button.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.list{background:var(--card);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+.it{display:flex;gap:12px;padding:12px 14px;border-top:1px solid var(--line);align-items:flex-start}
+.it:first-child{border-top:0}
+.av{width:38px;height:38px;border-radius:50%;flex:none;display:grid;place-items:center;font-weight:700;color:#fff;font-size:15px}
+.av.boy{background:var(--boy)} .av.girl{background:var(--girl)}
+.it .mid{flex:1;min-width:0}
+.it .nm{font-weight:700;font-size:15px}
+.it .sub{font-size:12px;color:var(--muted)}
+.it .msg{font-size:13px;margin-top:4px;color:#3d3850;font-style:italic}
+.it .rt{text-align:right;flex:none}
+.it .rt b{font-family:"Bricolage Grotesque",system-ui,sans-serif;font-size:16px;display:block}
+.badge{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:99px;margin-top:3px}
+.badge.p{background:var(--mint-soft);color:var(--mint)}
+.badge.w{background:#FFF1D6;color:#A86A00}
+.badge.z{background:#F1EEF6;color:var(--muted)}
+.empty{padding:24px;text-align:center;color:var(--muted);font-size:14px}
+
+/* regras */
+.rules{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:6px 16px}
+.rules .r{display:flex;gap:12px;padding:12px 0;border-top:1px solid var(--line);font-size:14px}
+.rules .r:first-child{border-top:0}
+.rules .n{font-family:"Bricolage Grotesque",system-ui,sans-serif;font-weight:800;color:var(--muted);width:18px;flex:none}
+
+/* admin */
+.adm-toggle{width:100%;margin-top:28px;border:1.5px dashed #CFC6B8;background:transparent;border-radius:14px;padding:14px;font-weight:700;color:var(--muted)}
+.adm{display:none;margin-top:12px;background:var(--ink);color:#fff;border-radius:var(--r);padding:18px}
+.adm h3{font-size:20px}
+.adm p.d{font-size:13px;opacity:.7;margin:4px 0 14px}
+.adm .row{display:flex;align-items:center;gap:10px;padding:10px 0;border-top:1px solid rgba(255,255,255,.12);font-size:14px}
+.adm .row .nm{flex:1}
+.adm .row .v{font-family:"Bricolage Grotesque",system-ui,sans-serif;font-weight:700}
+.sw{border:0;border-radius:99px;padding:6px 12px;font-size:12px;font-weight:700;background:rgba(255,255,255,.14);color:#fff}
+.sw.on{background:var(--mint)}
+.res{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin:8px 0 4px}
+.res button{border:0;border-radius:12px;padding:12px 6px;font-weight:700;font-size:14px;background:rgba(255,255,255,.12);color:#fff}
+.res button.on.boy{background:var(--boy)} .res button.on.girl{background:var(--girl)} .res button.on.none{background:#fff;color:var(--ink)}
+.pay{margin-top:14px;background:rgba(255,255,255,.07);border-radius:12px;padding:12px}
+.pay .row{border-top:1px solid rgba(255,255,255,.1)}
+.pay .row:first-child{border-top:0}
+.tot{display:flex;justify-content:space-between;font-weight:700;padding-top:10px;margin-top:6px;border-top:1px solid rgba(255,255,255,.25)}
+.tot .fr{color:#7FE0B6}
+
+/* resultado banner */
+.winner{display:none;margin-top:16px;border-radius:var(--r);padding:16px;text-align:center;color:#fff}
+.winner h2{font-size:26px}
+.winner.boy{background:var(--boy)} .winner.girl{background:var(--girl)}
+
+.hint{font-size:12px;color:var(--muted);margin-top:6px}
+.mylink{margin-top:18px;border:1.5px dashed var(--line);border-radius:14px;padding:14px;text-align:left}
+.mylink b{font-size:15px} .mylink p{margin:4px 0 10px;font-size:13px;color:var(--muted)}
+.mylink .key{background:#FDFBF8;border:1px solid var(--line)}
+.btn2{width:100%;margin-top:10px;border:1.5px solid var(--ink);background:#fff;color:var(--ink);border-radius:12px;padding:12px;font-weight:700;font-size:15px}
+.sheet{position:fixed;inset:0;background:rgba(20,16,32,.55);display:none;align-items:flex-end;justify-content:center;z-index:20}
+.sheet.show{display:flex}
+.sheet .in{background:var(--bg);width:100%;max-width:560px;border-radius:24px 24px 0 0;padding:22px 18px 28px;max-height:90vh;overflow:auto}
+.sheet .bar2{width:40px;height:4px;border-radius:9px;background:#D8D0C3;margin:-8px auto 14px}
+.mycard{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:16px;margin-top:12px}
+.mycard .row{display:flex;justify-content:space-between;padding:8px 0;border-top:1px solid var(--line);font-size:14px}
+.mycard .row:first-child{border-top:0}
+.mycard .row span:first-child{color:var(--muted)}
+.status{margin-top:12px;border-radius:14px;padding:14px;font-size:14px;text-align:center}
+.status.w{background:#FFF1D6;color:#7A4E00}.status.p{background:var(--mint-soft);color:#0F6B4A}.status.z{background:#F1EEF6;color:var(--muted)}
+.status.win{background:var(--ink);color:#fff}.status.win b{font-family:"Bricolage Grotesque",system-ui,sans-serif;font-size:26px;display:block;margin:4px 0}
+.login{background:var(--ink);color:#fff;border-radius:var(--r);padding:18px;margin-top:12px;display:none}
+.login h3{font-size:20px}.login p{font-size:13px;opacity:.75;margin:4px 0 12px}
+.login input{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.2);color:#fff}
+.login input::placeholder{color:rgba(255,255,255,.45)}
+.login .cta{background:#fff;color:var(--ink);margin-top:10px}
+.login .sent{display:none;font-size:14px;background:rgba(255,255,255,.08);border-radius:12px;padding:12px;margin-top:10px}
+.login .sim{background:none;border:0;color:#7FE0B6;text-decoration:underline;font-size:13px;margin-top:10px;padding:0}
+.adm .row{flex-wrap:wrap}
+.adm .who{flex:1 1 150px;min-width:150px}
+.adm .who small{display:block;opacity:.6;font-size:12px}
+.adm .dup{color:var(--gold);font-weight:700}
+.adm .acts{display:flex;gap:6px;align-items:center;margin-left:auto;flex-wrap:wrap;justify-content:flex-end}
+.wa{border:0;border-radius:99px;padding:6px 10px;font-size:12px;font-weight:700;background:#25D366;color:#0B3B1E}
+.del{border:0;background:none;color:rgba(255,255,255,.45);font-size:12px;text-decoration:underline;padding:4px}
+.adm .out{border:0;background:none;color:rgba(255,255,255,.6);text-decoration:underline;font-size:13px;float:right;padding:0}
+.foot{margin-top:32px;text-align:center;font-size:12px;color:var(--muted)}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(80px);background:var(--ink);color:#fff;padding:10px 16px;border-radius:99px;font-size:14px;transition:.25s;opacity:0}
+.toast.show{transform:translateX(-50%);opacity:1}
+.pixhow{font-size:13px;color:var(--muted);margin:10px 0 4px}
+.qrbox{margin-top:12px;border:1px solid var(--line);border-radius:12px;padding:10px 12px;text-align:left}
+.qrbox summary{font-weight:700;font-size:14px;cursor:pointer}
+.qr{width:220px;max-width:100%;margin:12px auto 4px;background:#fff;padding:6px;border-radius:8px}
+.qr svg{width:100%;height:auto;display:block}
+.pixkey{font-size:12px;color:var(--muted);margin-top:10px;word-break:break-all}
+.mypay{text-align:center;margin-top:8px}
+.mypay .amount{font-size:28px;margin-top:8px}
+[hidden]{display:none!important}
+</style>
+</head>
+<body>
+<div class="preview" id="demoBar" hidden>Prévia · <b>palpites de exemplo</b> · nada aqui é salvo</div>
+<div class="wrap">
+
+  <div class="top">
+    <img class="logoimg" src="logo.svg" alt="BEBEBET">
+    <div class="live" id="liveTag"><i></i><span id="liveTxt">Apostas abertas</span></div>
+  </div>
+
+  <div class="hero">
+    <img src="foto.jpg" alt="Thiago e Laura">
+    <div class="ov">
+      <h1>Bento ou Eva?</h1>
+      <p>Thiago e Laura estão esperando um bebê, e a família inteira vai palpitar.</p>
+      <div class="chip-date">🎈 Revelação: <span id="revData">a definir</span></div>
+    </div>
+  </div>
+
+  <div class="winner" id="winner"></div>
+
+  <!-- PLACAR -->
+  <section class="sec">
+    <div class="sec-h"><h2>Placar</h2><small id="upd">carregando…</small></div>
+    <div class="board">
+      <div class="potbig">
+        <span>Total arrecadado</span>
+        <b class="num" id="potT">R$ 0,00</b>
+        <small class="num" id="potF">R$ 0,00 já garantidos em fralda*</small>
+      </div>
+      <div class="teams">
+        <div class="team boy"><div class="t">💙 Time Bento</div><div class="odd num" id="cntB">0</div><div class="lbl">palpites</div></div>
+        <div class="team girl"><div class="t">💗 Time Eva</div><div class="odd num" id="cntG">0</div><div class="lbl">palpites</div></div>
+      </div>
+      <div class="bar"><span id="barB" style="width:50%"></span></div>
+      <div class="barlbl num"><span id="pctB">50% Bento</span><span id="pctG">50% Eva</span></div>
+    </div>
+  </section>
+
+  <!-- MEUS PALPITES (aparece se a pessoa já palpitou neste celular) -->
+  <button class="btn2" id="myBtn" hidden style="margin-top:16px">📌 Ver meu palpite</button>
+
+  <!-- APOSTA -->
+  <section class="sec" id="apostar">
+    <div class="sec-h"><h2>Faça seu palpite</h2><small>leva 30 segundos</small></div>
+    <div class="slip">
+      <div id="closed" hidden style="text-align:center;padding:12px 0">
+        <div style="font-size:40px">⏰</div>
+        <h3 style="font-size:20px;margin:6px 0">Palpites encerrados</h3>
+        <p style="color:var(--muted);font-size:14px;margin:0">Agora é torcer e esperar a revelação!</p>
+      </div>
+      <div id="form">
+        <label class="f" for="nome">Seu nome</label>
+        <input type="text" id="nome" placeholder="Ex.: Tia Rose" maxlength="40" autocomplete="name">
+
+        <label class="f" for="tel">Seu WhatsApp</label>
+        <input type="text" id="tel" placeholder="(11) 98765-4321" inputmode="tel" autocomplete="tel" maxlength="15">
+        <div class="hint">🔒 Só os organizadores veem. Serve pra confirmar seu Pix e avisar se você ganhar.</div>
+
+        <label class="f">Seu palpite</label>
+        <div class="pick">
+          <button class="boy" data-s="Bento"><span class="e">💙</span>Time Bento<small style="font-weight:500;font-size:12px;opacity:.7">é menino</small></button>
+          <button class="girl" data-s="Eva"><span class="e">💗</span>Time Eva<small style="font-weight:500;font-size:12px;opacity:.7">é menina</small></button>
+        </div>
+
+        <label class="f">Quer apostar um valor? <span style="font-weight:400;color:var(--muted)">(opcional)</span></label>
+        <div class="vals">
+          <button data-v="0" class="on">Só palpite</button>
+          <button data-v="10">R$ 10</button>
+          <button data-v="20">R$ 20</button>
+          <button data-v="50">R$ 50</button>
+          <button data-v="outro">Outro</button>
+        </div>
+        <input type="number" id="outro" min="1" max="5000" step="1" inputmode="numeric" placeholder="Valor em reais">
+
+        <label class="f">Se ganhar, o que faz com o prêmio?</label>
+        <div class="prize" id="prize">
+          <button data-p="Metade em dinheiro" class="on"><span class="e">💵</span><div><b>Metade em dinheiro</b><span id="cashTxt">50% depositado pra você · 50% vira fralda</span></div></button>
+          <button data-p="Tudo em fralda"><span class="e">🧷</span><div><b>Tudo em fralda</b><span>100% do prêmio vira fralda pro bebê</span></div></button>
+        </div>
+
+        <label class="f" for="msg">Recadinho pro bebê <span style="font-weight:400;color:var(--muted)">(opcional)</span></label>
+        <textarea id="msg" maxlength="140" placeholder="Ex.: Já tô com saudade!"></textarea>
+
+        <div class="ret" id="ret"></div>
+        <button class="cta" id="send" disabled>Confirmar palpite</button>
+        <div class="err" id="err"></div>
+      </div>
+
+      <div class="pix" id="pix">
+        <div class="ok">🎉</div>
+        <h3 id="pixT">Palpite registrado!</h3>
+        <p id="pixP"></p>
+        <div id="pixBox"></div>
+        <div class="mylink">
+          <b>📌 Seu link "meu palpite"</b>
+          <p>Salve ou mande pra você mesmo no WhatsApp. Por ele você acompanha se o Pix foi confirmado e quanto ganhou.</p>
+          <div class="key"><div><small>Link pessoal</small><b id="myUrl">…</b></div><button id="copyMy">Copiar</button></div>
+          <button class="btn2" id="openMy">Ver meu palpite</button>
+        </div>
+        <button class="ghost" id="again">Fazer outro palpite</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- MURAL -->
+  <section class="sec">
+    <div class="sec-h"><h2>Mural de palpites</h2><small id="total">0 pessoas</small></div>
+    <div class="filters">
+      <button class="on" data-f="all">Todos</button>
+      <button data-f="Bento">💙 Bento</button>
+      <button data-f="Eva">💗 Eva</button>
+    </div>
+    <div class="list" id="list"><div class="empty">Carregando palpites…</div></div>
+  </section>
+
+  <!-- REGRAS -->
+  <section class="sec">
+    <div class="sec-h"><h2>Como funciona</h2></div>
+    <div class="rules">
+      <div class="r"><span class="n">1</span><div>Palpite é de graça. Apostar valor é opcional: quem só palpita entra na brincadeira, mas não leva prêmio.</div></div>
+      <div class="r"><span class="n">2</span><div>Só conta no bolão o valor com Pix confirmado pelos organizadores.</div></div>
+      <div class="r"><span class="n">3</span><div>Quem acertar divide o bolão inteiro, <b>proporcional ao que apostou</b>.</div></div>
+      <div class="r"><span class="n">4</span><div id="rule4">Quem escolher dinheiro recebe <b>50% depositado e 50% vira fralda</b>. Quem escolher fralda converte 100%.</div></div>
+      <div class="r"><span class="n">5</span><div>Se ninguém com valor acertar, o bolão inteiro vira fralda. O bebê nunca perde. 🍼</div></div>
+    </div>
+  </section>
+
+  <div class="foot"><span id="footNote">* fralda garantida = no mínimo 50% de todo valor pago, mesmo que o acertador escolha dinheiro.</span><br>BEBEBET · feito com carinho pra família 💙💗</div>
+</div>
+
+<div class="sheet" id="mine"><div class="in"><div class="bar2"></div>
+  <h2 style="font-size:22px">Meu palpite</h2>
+  <div id="mineBody"><div class="empty">Carregando…</div></div>
+  <button class="btn2" id="closeMine">Voltar ao BEBEBET</button>
+</div></div>
+<div class="toast" id="toast"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
