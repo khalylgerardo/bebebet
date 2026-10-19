@@ -10,7 +10,7 @@ const brl = v => Number(v || 0).toLocaleString('pt-BR', { style: 'currency', cur
 const esc = t => String(t || '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const pctTxt = p => Math.round(p * 100) + '%';
 
-let data = null, filter = 'all', form = { s: null, v: 0, p: 'Metade em dinheiro' }, sending = false;
+let data = null, filter = 'all', form = { s: null, v: 0, p: 'Tudo em fralda' }, sending = false;
 
 /* ---------- prévia (sem planilha ligada) ---------- */
 const demoState = {
@@ -248,11 +248,11 @@ $('send').onclick = async () => {
   }
 };
 $('again').onclick = () => {
-  form = { s: null, v: 0, p: 'Metade em dinheiro' };
+  form = { s: null, v: 0, p: 'Tudo em fralda' };
   ['nome', 'tel', 'msg', 'outro'].forEach(id => $(id).value = ''); $('outro').style.display = 'none';
   document.querySelectorAll('.pick button').forEach(x => x.classList.remove('on'));
   document.querySelectorAll('.vals button').forEach(x => x.classList.toggle('on', x.dataset.v === '0'));
-  document.querySelectorAll('.prize button').forEach(x => x.classList.toggle('on', x.dataset.p === 'Metade em dinheiro'));
+  document.querySelectorAll('.prize button').forEach(x => x.classList.toggle('on', x.dataset.p === 'Tudo em fralda'));
   $('pix').style.display = 'none'; $('form').style.display = 'block'; renderRet();
 };
 function copy(t, ok) { (navigator.clipboard ? navigator.clipboard.writeText(t) : Promise.reject()).then(() => toast(ok), () => toast('Copie: ' + t)); }

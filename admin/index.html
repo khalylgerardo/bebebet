@@ -112,6 +112,11 @@ input:focus{border-color:var(--ink)}
 .tot+.tot{border-top:0;padding-top:6px}
 .tot .fr{color:var(--mint)}
 
+.sim-tabs{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}
+.sim-tabs button{border:1.5px solid var(--line);border-radius:12px;padding:11px 6px;font-weight:700;background:#fff;color:var(--ink)}
+.sim-tabs button.on.boy{background:var(--boy);border-color:var(--boy);color:#fff}
+.sim-tabs button.on.girl{background:var(--girl);border-color:var(--girl);color:#fff}
+.sim-note{font-size:12px;color:var(--muted);margin-top:10px}
 .foot{margin-top:28px;text-align:center;font-size:13px}
 .foot a{color:var(--muted)}
 .toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(80px);background:var(--ink);color:#fff;padding:10px 16px;border-radius:99px;font-size:14px;transition:.25s;opacity:0;z-index:30;max-width:90vw;text-align:center}
@@ -147,6 +152,16 @@ input:focus{border-color:var(--ink)}
       <div class="stat warn"><span>Aguardando Pix</span><b class="num" id="sPend">R$ 0,00</b></div>
       <div class="stat"><span>Palpites</span><b class="num" id="sQtd">0</b><div class="teams num"><span class="b" id="sB">💙 0</span><span class="g" id="sG">💗 0</span></div></div>
     </div>
+
+    <!-- SIMULAÇÃO (antes do resultado) -->
+    <section class="sec" id="simSec">
+      <div class="sec-h"><h2>Simulação de pagamentos</h2><small>se fosse hoje</small></div>
+      <div class="sim-tabs">
+        <button data-s="Bento" class="boy on">💙 Se der Bento</button>
+        <button data-s="Eva" class="girl">💗 Se der Eva</button>
+      </div>
+      <div class="box pay" id="simBox"></div>
+    </section>
 
     <!-- PAGAMENTOS (aparece depois do resultado) -->
     <section class="sec" id="paySec" hidden>
@@ -198,7 +213,7 @@ const brl = v => Number(v || 0).toLocaleString('pt-BR', { style: 'currency', cur
 const esc = t => String(t || '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 const timeTxt = t => t === 'Bento' ? 'Time Bento 💙' : 'Time Eva 💗';
 
-let senha = '', D = null, filtro = 'pend', busca = '';
+let senha = '', D = null, filtro = 'pend', busca = '', simTime = 'Bento';
 try { senha = localStorage.getItem('bebebet_admin') || ''; } catch (e) {}
 
 async function api(body) {
@@ -258,6 +273,7 @@ function render() {
   if (document.activeElement !== $('revelacao')) $('revelacao').value = c.revelacao || '';
   document.querySelectorAll('.res button').forEach(b => b.classList.toggle('on', b.dataset.r === (c.resultado || '')));
 
+  renderSim();
   $('paySec').hidden = !c.resultado;
   if (c.resultado) {
     $('payTitle').textContent = c.resultado === 'Bento' ? 'Deu Bento! 💙 Pagamentos' : 'Deu Eva! 💗 Pagamentos';
@@ -269,6 +285,35 @@ function render() {
       + `<div class="tot"><span>Depositar aos ganhadores</span><span class="num">${brl(D.depositar)}</span></div>
          <div class="tot"><span>Comprar em fralda</span><span class="num fr">${brl(D.fralda)}</span></div>`;
   }
+}
+
+// mesma regra da planilha: só Pix confirmado conta; quem acerta divide o bolão
+// proporcional à aposta; "Metade em dinheiro" deposita a % configurada e o resto vira fralda.
+function simula(time) {
+  const pct = Number(D.config.pctDeposito) || .5;
+  const pagos = D.lista.filter(p => p.pago && p.valor > 0);
+  const total = pagos.reduce((a, p) => a + p.valor, 0);
+  const doTime = pagos.filter(p => p.time === time).reduce((a, p) => a + p.valor, 0);
+  let depositar = 0, fralda = doTime ? 0 : total;
+  const gan = doTime ? pagos.filter(p => p.time === time).map(p => {
+    const bruto = p.valor / doTime * total, dep = p.premio === 'Tudo em fralda' ? 0 : bruto * pct;
+    depositar += dep; fralda += bruto - dep;
+    return { ...p, deposito: Math.round(dep * 100) / 100, fralda: Math.round((bruto - dep) * 100) / 100 };
+  }).sort((a, b) => b.valor - a.valor) : [];
+  return { gan, depositar, fralda, total };
+}
+function renderSim() {
+  $('simSec').hidden = !!D.config.resultado;
+  if (D.config.resultado) return;
+  document.querySelectorAll('.sim-tabs button').forEach(b => b.classList.toggle('on', b.dataset.s === simTime));
+  const s = simula(simTime);
+  $('simBox').innerHTML = (s.gan.length ? s.gan.map(g => `<div class="p">
+      <div><b>${esc(g.nome)}</b><br><span style="font-size:12px;color:var(--muted)">apostou ${brl(g.valor)} · ${g.premio === 'Tudo em fralda' ? 'tudo em fralda' : 'metade em dinheiro'}</span></div>
+      <div class="r"><b class="num">${g.deposito ? brl(g.deposito) : '—'}</b><small class="num">+ ${brl(g.fralda)} fralda</small></div></div>`).join('')
+    : `<div style="font-size:14px">Ninguém com Pix confirmado apostou no Time ${simTime}. Se der ${simTime}, todo o bolão vira fralda. 🍼</div>`)
+    + `<div class="tot"><span>Transferir aos ganhadores</span><span class="num">${brl(s.depositar)}</span></div>
+       <div class="tot"><span>Comprar em fralda</span><span class="num fr">${brl(s.fralda)}</span></div>
+       <div class="sim-note">Conta só os Pix já confirmados (${brl(s.total)}). ${D.pendente ? `Os ${brl(D.pendente)} aguardando Pix ficam de fora até serem confirmados.` : ''} Muda a cada nova aposta.</div>`;
 }
 
 function card(p) {
@@ -301,6 +346,7 @@ $('lista').onclick = e => {
   if (b.dataset.a === 'pago') acao({ acao: 'pago', id: b.dataset.id, pago: b.dataset.v === '1' }, b.closest('.card'), b.dataset.v === '1' ? 'Pix confirmado ✓' : 'Confirmação desfeita');
   if (b.dataset.a === 'apagar' && confirm(`Apagar o palpite de ${b.dataset.nome}? Isso não tem volta.`)) acao({ acao: 'apagar', id: b.dataset.id }, b.closest('.card'), 'Palpite apagado');
 };
+document.querySelectorAll('.sim-tabs button').forEach(b => b.onclick = () => { simTime = b.dataset.s; renderSim(); });
 $('chips').onclick = e => { const b = e.target.closest('button'); if (!b) return; filtro = b.dataset.f; render(); };
 $('busca').addEventListener('input', e => { busca = e.target.value.trim().toLowerCase(); render(); });
 $('swAberto').onclick = () => {
