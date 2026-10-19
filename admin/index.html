@@ -1,0 +1,325 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>BEBEBET · Organizadores</title>
+<link rel="icon" type="image/svg+xml" href="../icone.svg">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&display=swap" rel="stylesheet">
+<style>
+:root{color-scheme:light;--bg:#FBF6EF;--card:#fff;--ink:#1E1B2E;--muted:#6B6679;--line:#ECE5DA;
+  --boy:#2F6BEA;--boy-soft:#E3ECFF;--girl:#E8457A;--girl-soft:#FFE3EC;--mint:#1F9B6E;--mint-soft:#DDF4EA;--warn:#A86A00;--warn-soft:#FFF1D6;--r:16px}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"DM Sans",system-ui,sans-serif;font-size:15px;line-height:1.45;-webkit-font-smoothing:antialiased}
+h1,h2,h3{font-family:"Bricolage Grotesque",system-ui,sans-serif;letter-spacing:-.02em;margin:0}
+button{font:inherit;cursor:pointer}
+.num{font-variant-numeric:tabular-nums}
+.wrap{max-width:640px;margin:0 auto;padding:0 16px 56px}
+.top{display:flex;align-items:center;justify-content:space-between;padding:14px 0}
+.top img{height:40px;display:block}
+.tag{font-size:12px;font-weight:700;background:var(--ink);color:#fff;border-radius:99px;padding:5px 10px}
+.link{background:none;border:0;color:var(--muted);text-decoration:underline;font-size:13px;padding:4px}
+[hidden]{display:none!important}
+
+/* login */
+.login{margin-top:12vh;background:var(--card);border:1px solid var(--line);border-radius:20px;padding:24px;text-align:center;box-shadow:0 12px 30px -20px rgba(30,27,46,.4)}
+.login img{height:64px;margin:0 auto 12px;display:block}
+.login h1{font-size:24px}
+.login p{color:var(--muted);margin:6px 0 18px;font-size:14px}
+input[type=password],input[type=text],input[type=search]{width:100%;font:inherit;padding:13px 14px;border:1.5px solid var(--line);border-radius:12px;background:#FDFBF8;color:var(--ink);outline:none}
+input:focus{border-color:var(--ink)}
+.btn{width:100%;margin-top:12px;border:0;border-radius:12px;padding:14px;font-weight:700;font-size:16px;color:#fff;background:var(--ink)}
+.btn:disabled{opacity:.4}
+.remember{display:flex;gap:8px;align-items:center;justify-content:center;margin-top:12px;font-size:13px;color:var(--muted)}
+.err{color:var(--girl);font-size:13px;margin-top:10px;min-height:1em}
+
+/* resumo */
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:6px}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:14px}
+.stat span{display:block;font-size:12px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.04em}
+.stat b{display:block;font-family:"Bricolage Grotesque",system-ui,sans-serif;font-size:26px;margin-top:2px}
+.stat.main{grid-column:1/-1;background:var(--ink);color:#fff;border-color:var(--ink)}
+.stat.main span{color:rgba(255,255,255,.7)}
+.stat.main b{font-size:36px}
+.stat.main small{color:#7FE0B6;font-weight:700;font-size:13px}
+.stat .teams{display:flex;gap:12px;margin-top:4px;font-weight:700}
+.stat .teams .b{color:var(--boy)} .stat .teams .g{color:var(--girl)}
+.stat.warn b{color:var(--warn)}
+
+.sec{margin-top:26px}
+.sec-h{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px}
+.sec-h h2{font-size:20px}
+.sec-h small{color:var(--muted);font-size:13px}
+
+/* filtros */
+.chips{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px;margin-bottom:10px;-webkit-overflow-scrolling:touch}
+.chips button{flex:none;border:1.5px solid var(--line);background:#fff;border-radius:99px;padding:7px 12px;font-size:13px;font-weight:700;color:var(--ink)}
+.chips button.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.search{margin-bottom:10px}
+
+/* cartões de palpite */
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:14px;margin-bottom:10px}
+.card .h{display:flex;gap:10px;align-items:flex-start}
+.av{width:36px;height:36px;border-radius:50%;flex:none;display:grid;place-items:center;font-weight:700;color:#fff}
+.av.boy{background:var(--boy)} .av.girl{background:var(--girl)}
+.card .who{flex:1;min-width:0}
+.card .nm{font-weight:700;font-size:16px}
+.card .sub{font-size:12px;color:var(--muted)}
+.card .val{text-align:right;flex:none}
+.card .val b{font-family:"Bricolage Grotesque",system-ui,sans-serif;font-size:18px;display:block}
+.badge{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:99px;margin-top:2px}
+.badge.p{background:var(--mint-soft);color:var(--mint)} .badge.w{background:var(--warn-soft);color:var(--warn)} .badge.z{background:#F1EEF6;color:var(--muted)}
+.card .msg{font-size:13px;font-style:italic;color:#3d3850;margin-top:8px}
+.card .meta{font-size:12px;color:var(--muted);margin-top:6px}
+.acts{display:flex;gap:6px;margin-top:12px;flex-wrap:wrap}
+.acts button,.acts a{flex:1;min-width:0;text-align:center;border-radius:10px;padding:10px 8px;font-weight:700;font-size:13px;text-decoration:none;border:1.5px solid var(--line);background:#fff;color:var(--ink)}
+.acts .ok{background:var(--mint);border-color:var(--mint);color:#fff}
+.acts .undo{background:#fff;color:var(--muted)}
+.acts .wa{background:#25D366;border-color:#25D366;color:#0B3B1E}
+.acts .del{flex:0 0 auto;color:var(--girl);border-color:var(--girl-soft)}
+.acts button:disabled{opacity:.5}
+.empty{padding:22px;text-align:center;color:var(--muted);font-size:14px;background:var(--card);border:1px dashed var(--line);border-radius:var(--r)}
+
+/* configurações */
+.box{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:16px}
+.row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 0;border-top:1px solid var(--line)}
+.row:first-child{border-top:0;padding-top:0}
+.row .l b{display:block}
+.row .l small{color:var(--muted);font-size:12px}
+.sw{position:relative;width:52px;height:30px;flex:none;border:0;border-radius:99px;background:#D8D0C3;transition:.2s}
+.sw::after{content:"";position:absolute;top:3px;left:3px;width:24px;height:24px;border-radius:50%;background:#fff;transition:.2s}
+.sw.on{background:var(--mint)} .sw.on::after{left:25px}
+.inline{display:flex;gap:8px;margin-top:8px}
+.inline input{flex:1}
+.inline button{flex:none;border:0;border-radius:12px;padding:0 16px;font-weight:700;background:var(--ink);color:#fff}
+.res{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:8px}
+.res button{border:1.5px solid var(--line);border-radius:12px;padding:12px 6px;font-weight:700;background:#fff}
+.res button.on.none{background:var(--ink);color:#fff;border-color:var(--ink)}
+.res button.on.boy{background:var(--boy);color:#fff;border-color:var(--boy)}
+.res button.on.girl{background:var(--girl);color:#fff;border-color:var(--girl)}
+
+/* pagamentos */
+.pay .p{display:flex;justify-content:space-between;gap:10px;padding:12px 0;border-top:1px solid var(--line);align-items:center}
+.pay .p:first-child{border-top:0;padding-top:0}
+.pay .p .r{text-align:right}
+.pay .p .r b{font-family:"Bricolage Grotesque",system-ui,sans-serif;font-size:17px;display:block}
+.pay .p .r small{color:var(--mint);font-weight:700}
+.pay .p a{display:inline-block;margin-top:4px;font-size:12px;font-weight:700;background:#25D366;color:#0B3B1E;border-radius:99px;padding:4px 10px;text-decoration:none}
+.tot{display:flex;justify-content:space-between;font-weight:700;padding-top:12px;margin-top:4px;border-top:2px solid var(--ink)}
+.tot+.tot{border-top:0;padding-top:6px}
+.tot .fr{color:var(--mint)}
+
+.foot{margin-top:28px;text-align:center;font-size:13px}
+.foot a{color:var(--muted)}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(80px);background:var(--ink);color:#fff;padding:10px 16px;border-radius:99px;font-size:14px;transition:.25s;opacity:0;z-index:30;max-width:90vw;text-align:center}
+.toast.show{transform:translateX(-50%);opacity:1}
+.loading{opacity:.55;pointer-events:none}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- LOGIN -->
+  <div id="loginView">
+    <div class="login">
+      <img src="../icone.svg" alt="">
+      <h1>Área dos organizadores</h1>
+      <p>Painel do BEBEBET para o Thiago, a Laura e o Khalyl.</p>
+      <input type="password" id="senha" placeholder="Senha do painel" autocomplete="current-password">
+      <label class="remember"><input type="checkbox" id="lembrar" checked> Lembrar neste aparelho</label>
+      <button class="btn" id="entrar">Entrar</button>
+      <div class="err" id="loginErr"></div>
+    </div>
+  </div>
+
+  <!-- PAINEL -->
+  <div id="painelView" hidden>
+    <div class="top">
+      <img src="../logo.svg" alt="BEBEBET">
+      <div><span class="tag">Organizadores</span> <button class="link" id="sair">Sair</button></div>
+    </div>
+
+    <div class="stats">
+      <div class="stat main"><span>Arrecadado (Pix confirmado)</span><b class="num" id="sTotal">R$ 0,00</b><small class="num" id="sFralda"></small></div>
+      <div class="stat warn"><span>Aguardando Pix</span><b class="num" id="sPend">R$ 0,00</b></div>
+      <div class="stat"><span>Palpites</span><b class="num" id="sQtd">0</b><div class="teams num"><span class="b" id="sB">💙 0</span><span class="g" id="sG">💗 0</span></div></div>
+    </div>
+
+    <!-- PAGAMENTOS (aparece depois do resultado) -->
+    <section class="sec" id="paySec" hidden>
+      <div class="sec-h"><h2 id="payTitle">Pagamentos</h2><small>pelo resultado lançado</small></div>
+      <div class="box pay" id="payBox"></div>
+    </section>
+
+    <!-- PALPITES -->
+    <section class="sec">
+      <div class="sec-h"><h2>Palpites</h2><small id="upd"></small></div>
+      <div class="chips" id="chips"></div>
+      <input type="search" class="search" id="busca" placeholder="Buscar por nome">
+      <div id="lista"></div>
+    </section>
+
+    <!-- CONFIGURAÇÕES -->
+    <section class="sec">
+      <div class="sec-h"><h2>Configurações</h2></div>
+      <div class="box">
+        <div class="row">
+          <div class="l"><b>Apostas abertas</b><small id="abertoTxt">O site está aceitando palpites</small></div>
+          <button class="sw" id="swAberto" aria-label="Apostas abertas"></button>
+        </div>
+        <div class="row" style="display:block">
+          <div class="l"><b>Data da revelação</b><small>Aparece no topo do site</small></div>
+          <div class="inline"><input type="text" id="revelacao" maxlength="60" placeholder="Ex.: 15/12 às 16h"><button id="salvarRev">Salvar</button></div>
+        </div>
+        <div class="row" style="display:block">
+          <div class="l"><b>Resultado</b><small>Só lance no dia da revelação. O site mostra para todo mundo na hora.</small></div>
+          <div class="res">
+            <button data-r="" class="none">Ainda não</button>
+            <button data-r="Bento" class="boy">💙 Bento</button>
+            <button data-r="Eva" class="girl">💗 Eva</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="foot"><a id="planilhaLink" href="#" target="_blank" rel="noopener">Abrir a planilha completa</a> · <a href="../" target="_blank" rel="noopener">Ver o site</a></div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+const API_URL = 'https://script.google.com/macros/s/AKfycbwBzcwS8W239yxR7PXhk2YismPUUknA8OfMJctKwAQUQKVIoDLejUQGrfxxQR5t1eH56Q/exec';
+const SITE = location.origin + location.pathname.replace(/admin\/?(index\.html)?$/, '');
+const $ = id => document.getElementById(id);
+const brl = v => Number(v || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+const esc = t => String(t || '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const timeTxt = t => t === 'Bento' ? 'Time Bento 💙' : 'Time Eva 💗';
+
+let senha = '', D = null, filtro = 'pend', busca = '';
+try { senha = localStorage.getItem('bebebet_admin') || ''; } catch (e) {}
+
+async function api(body) {
+  const r = await fetch(API_URL, { method: 'POST', body: JSON.stringify({ ...body, senha }) });
+  return r.json();
+}
+
+/* ---------- login ---------- */
+async function entrar(auto) {
+  if (!auto) senha = $('senha').value.trim();
+  if (!senha) return;
+  $('entrar').disabled = true; $('entrar').textContent = 'Entrando…'; $('loginErr').textContent = '';
+  try {
+    const r = await api({ acao: 'lista' });
+    if (!r.ok) throw new Error(r.erro || 'Não deu certo.');
+    try { if ($('lembrar').checked || auto) localStorage.setItem('bebebet_admin', senha); else localStorage.removeItem('bebebet_admin'); } catch (e) {}
+    D = r; $('loginView').hidden = true; $('painelView').hidden = false; render();
+  } catch (e) {
+    $('loginErr').textContent = e.message || 'Sem conexão. Tente de novo.';
+    if (auto) { try { localStorage.removeItem('bebebet_admin'); } catch (x) {} senha = ''; }
+  } finally { $('entrar').disabled = false; $('entrar').textContent = 'Entrar'; }
+}
+$('entrar').onclick = () => entrar(false);
+$('senha').addEventListener('keydown', e => { if (e.key === 'Enter') entrar(false); });
+$('sair').onclick = () => { try { localStorage.removeItem('bebebet_admin'); } catch (e) {} senha = ''; D = null; $('senha').value = ''; $('painelView').hidden = true; $('loginView').hidden = false; };
+
+/* ---------- WhatsApp ---------- */
+function wa(tel, texto) {
+  const d = String(tel || '').replace(/\D/g, '');
+  return `https://wa.me/55${d}?text=${encodeURIComponent(texto)}`;
+}
+const msgCobrar = p => `Oi ${p.nome}! Aqui é do BEBEBET 💙💗 Seu palpite no ${timeTxt(p.time)} de ${brl(p.valor)} ainda está aguardando o Pix. Pra pagar é só abrir seu link, que o Pix já vem pronto: ${SITE}?meu=${p.id}`;
+const msgConfirmado = p => `Oi ${p.nome}! Recebemos seu Pix de ${brl(p.valor)} no BEBEBET 🎉 Você está valendo no ${timeTxt(p.time)}! Acompanhe por aqui: ${SITE}?meu=${p.id}`;
+const msgGanhou = (g, res) => `Oi ${g.nome}! Deu ${res === 'Bento' ? 'BENTO 💙' : 'EVA 💗'}! 🎉 Você acertou no BEBEBET e ganhou ${g.deposito ? brl(g.deposito) + ' depositados pra você + ' : ''}${brl(g.fralda)} em fralda pro bebê. Obrigado por participar!`;
+
+/* ---------- desenho ---------- */
+function render() {
+  const c = D.config, L = D.lista;
+  $('sTotal').textContent = brl(D.total);
+  $('sFralda').textContent = brl(D.total * (1 - (Number(c.pctDeposito) || .5))) + ' já garantidos em fralda';
+  $('sPend').textContent = brl(D.pendente);
+  $('sQtd').textContent = L.length;
+  $('sB').textContent = '💙 ' + L.filter(p => p.time === 'Bento').length;
+  $('sG').textContent = '💗 ' + L.filter(p => p.time === 'Eva').length;
+  $('upd').textContent = 'atualizado ' + new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+  $('planilhaLink').href = D.planilha;
+
+  const pend = L.filter(p => p.valor > 0 && !p.pago), conf = L.filter(p => p.valor > 0 && p.pago), so = L.filter(p => !p.valor);
+  const grupos = [['pend', 'Aguardando Pix', pend], ['conf', 'Confirmados', conf], ['so', 'Só palpite', so], ['all', 'Todos', L]];
+  $('chips').innerHTML = grupos.map(([k, t, a]) => `<button data-f="${k}" class="${filtro === k ? 'on' : ''}">${t} (${a.length})</button>`).join('');
+  let ver = grupos.find(g => g[0] === filtro)[2];
+  if (busca) ver = ver.filter(p => p.nome.toLowerCase().includes(busca));
+  $('lista').innerHTML = ver.length ? ver.map(card).join('') : `<div class="empty">${filtro === 'pend' && !busca ? 'Nenhum Pix pendente. 🎉' : 'Nada por aqui.'}</div>`;
+
+  $('swAberto').classList.toggle('on', c.aberto);
+  $('abertoTxt').textContent = c.aberto ? 'O site está aceitando palpites' : 'Palpites encerrados no site';
+  if (document.activeElement !== $('revelacao')) $('revelacao').value = c.revelacao || '';
+  document.querySelectorAll('.res button').forEach(b => b.classList.toggle('on', b.dataset.r === (c.resultado || '')));
+
+  $('paySec').hidden = !c.resultado;
+  if (c.resultado) {
+    $('payTitle').textContent = c.resultado === 'Bento' ? 'Deu Bento! 💙 Pagamentos' : 'Deu Eva! 💗 Pagamentos';
+    $('payBox').innerHTML = (D.ganhadores.length ? D.ganhadores.map(g => `<div class="p">
+        <div><b>${esc(g.nome)}</b><br><span style="font-size:12px;color:var(--muted)">apostou ${brl(g.valor)} · ${g.premio === 'Tudo em fralda' ? 'tudo em fralda' : 'metade em dinheiro'}</span><br>
+        <a href="${wa(g.tel, msgGanhou(g, c.resultado))}" target="_blank" rel="noopener">Avisar no WhatsApp</a></div>
+        <div class="r"><b class="num">${g.deposito ? brl(g.deposito) : '—'}</b><small class="num">+ ${brl(g.fralda)} fralda</small></div></div>`).join('')
+      : '<div style="font-size:14px">Ninguém com Pix confirmado acertou. Todo o bolão vira fralda. 🍼</div>')
+      + `<div class="tot"><span>Depositar aos ganhadores</span><span class="num">${brl(D.depositar)}</span></div>
+         <div class="tot"><span>Comprar em fralda</span><span class="num fr">${brl(D.fralda)}</span></div>`;
+  }
+}
+
+function card(p) {
+  const boy = p.time === 'Bento';
+  const badge = !p.valor ? '<span class="badge z">só palpite</span>' : p.pago ? '<span class="badge p">Pix ok</span>' : '<span class="badge w">aguardando Pix</span>';
+  const acts = [];
+  if (p.valor) acts.push(p.pago ? `<button class="undo" data-a="pago" data-id="${p.id}" data-v="0">Desfazer Pix</button>` : `<button class="ok" data-a="pago" data-id="${p.id}" data-v="1">✓ Confirmar Pix</button>`);
+  if (p.tel) acts.push(`<a class="wa" href="${wa(p.tel, p.valor ? (p.pago ? msgConfirmado(p) : msgCobrar(p)) : `Oi ${p.nome}! Aqui é do BEBEBET 💙💗`)}" target="_blank" rel="noopener">${p.valor && !p.pago ? 'Cobrar' : 'WhatsApp'}</a>`);
+  acts.push(`<button class="del" data-a="apagar" data-id="${p.id}" data-nome="${esc(p.nome)}">Apagar</button>`);
+  return `<div class="card" id="c_${p.id}">
+    <div class="h"><div class="av ${boy ? 'boy' : 'girl'}">${esc((p.nome.trim()[0] || '?').toUpperCase())}</div>
+      <div class="who"><div class="nm">${esc(p.nome)}</div><div class="sub">${boy ? '💙 Time Bento' : '💗 Time Eva'} · ${esc(p.tel)}</div></div>
+      <div class="val"><b class="num">${p.valor ? brl(p.valor) : '—'}</b>${badge}</div></div>
+    ${p.recado ? `<div class="msg">“${esc(p.recado)}”</div>` : ''}
+    <div class="meta">${esc(p.data)} · ID ${esc(p.id)}${p.valor ? ' · ' + (p.premio === 'Tudo em fralda' ? 'prêmio todo em fralda' : 'metade em dinheiro') : ''}</div>
+    <div class="acts">${acts.join('')}</div></div>`;
+}
+
+/* ---------- ações ---------- */
+async function acao(body, el, ok) {
+  if (el) el.classList.add('loading');
+  try {
+    const r = await api(body);
+    if (!r.ok) { if (r.senhaErrada) return $('sair').onclick(); throw new Error(r.erro); }
+    D = r; render(); if (ok) toast(ok);
+  } catch (e) { toast(e.message || 'Não deu certo. Tente de novo.'); if (el) el.classList.remove('loading'); }
+}
+$('lista').onclick = e => {
+  const b = e.target.closest('button[data-a]'); if (!b) return;
+  if (b.dataset.a === 'pago') acao({ acao: 'pago', id: b.dataset.id, pago: b.dataset.v === '1' }, b.closest('.card'), b.dataset.v === '1' ? 'Pix confirmado ✓' : 'Confirmação desfeita');
+  if (b.dataset.a === 'apagar' && confirm(`Apagar o palpite de ${b.dataset.nome}? Isso não tem volta.`)) acao({ acao: 'apagar', id: b.dataset.id }, b.closest('.card'), 'Palpite apagado');
+};
+$('chips').onclick = e => { const b = e.target.closest('button'); if (!b) return; filtro = b.dataset.f; render(); };
+$('busca').addEventListener('input', e => { busca = e.target.value.trim().toLowerCase(); render(); });
+$('swAberto').onclick = () => {
+  const novo = !D.config.aberto;
+  if (!novo && !confirm('Encerrar os palpites? O site para de aceitar novos palpites.')) return;
+  acao({ acao: 'config', aberto: novo }, $('swAberto'), novo ? 'Palpites reabertos' : 'Palpites encerrados');
+};
+$('salvarRev').onclick = () => acao({ acao: 'config', revelacao: $('revelacao').value.trim() }, $('salvarRev'), 'Data salva');
+document.querySelectorAll('.res button').forEach(b => b.onclick = () => {
+  const r = b.dataset.r;
+  if (r === (D.config.resultado || '')) return;
+  const msg = r ? `Lançar o resultado: deu ${r.toUpperCase()}?\n\nO site vai mostrar na hora para todo mundo e as apostas serão encerradas.` : 'Apagar o resultado lançado? O site volta a mostrar que ainda não foi revelado.';
+  if (!confirm(msg)) return;
+  acao(r ? { acao: 'config', resultado: r, aberto: false } : { acao: 'config', resultado: '' }, b, r ? `Resultado lançado: ${r}!` : 'Resultado apagado');
+});
+
+let tt; function toast(t) { const e = $('toast'); e.textContent = t; e.classList.add('show'); clearTimeout(tt); tt = setTimeout(() => e.classList.remove('show'), 2200); }
+setInterval(() => { if (D && senha && !document.hidden) acao({ acao: 'lista' }); }, 60000);
+if (senha) entrar(true);
+</script>
+</body>
+</html>
