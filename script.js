@@ -118,7 +118,7 @@ function render() {
 
   $('cashTxt').textContent = `${pctTxt(pct)} depositado pra você · ${pctTxt(1 - pct)} vira fralda`;
   $('rule4').innerHTML = `Quem escolher dinheiro recebe <b>${pctTxt(pct)} depositado e ${pctTxt(1 - pct)} vira fralda</b>. Quem escolher fralda converte 100%.`;
-  $('footNote').textContent = `* fralda garantida = no mínimo ${pctTxt(1 - pct)} de todo valor pago, mesmo que o acertador escolha dinheiro.`;
+  $('footNote').textContent = '* fralda garantida: o que vira fralda seja qual for o resultado, de acordo com a escolha de cada apostador (tudo em fralda ou metade em dinheiro).';
 
   const open = c.aberto && !c.resultado;
   $('liveTxt').textContent = open ? 'Apostas abertas' : 'Apostas encerradas';

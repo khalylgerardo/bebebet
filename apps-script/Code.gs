@@ -27,7 +27,7 @@ function doGet(e) {
       resultado: cfg.resultado, aberto: cfg.aberto, pctDeposito: cfg.pct
     },
     total: arred_(total),
-    fraldaGarantida: arred_(total * (1 - cfg.pct)),
+    fraldaGarantida: arred_(fraldaGarantida_(pagos, total, cfg.pct)),
     bento: lista.filter(p => p.time === 'Bento').length,
     eva: lista.filter(p => p.time === 'Eva').length,
     mural: lista.slice().reverse().map(p => ({ nome: p.nome, time: p.time, recado: p.recado }))
@@ -205,6 +205,16 @@ function ultimaLinha_(sh) {
   const col = sh.getRange('A:A').getValues();
   for (let i = col.length - 1; i >= 0; i--) if (String(col[i][0]).trim() !== '') return i + 1;
   return 1;
+}
+// Quanto vira fralda em cada resultado, pela escolha de cada ganhador; o garantido é o menor dos dois.
+function fraldaSe_(pagos, total, time, pct) {
+  const doTime = soma_(pagos.filter(p => p.time === time));
+  if (!doTime) return total; // ninguém acertou: tudo vira fralda
+  const metade = soma_(pagos.filter(p => p.time === time && p.premio !== 'Tudo em fralda'));
+  return total - total * pct * metade / doTime;
+}
+function fraldaGarantida_(pagos, total, pct) {
+  return Math.min(fraldaSe_(pagos, total, 'Bento', pct), fraldaSe_(pagos, total, 'Eva', pct));
 }
 function soma_(l) { return l.reduce((a, p) => a + p.valor, 0); }
 function arred_(x) { return Math.round(x * 100) / 100; }

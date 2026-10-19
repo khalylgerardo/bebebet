@@ -253,7 +253,7 @@ const msgGanhou = (g, res) => `Oi ${g.nome}! Deu ${res === 'Bento' ? 'BENTO 💙
 function render() {
   const c = D.config, L = D.lista;
   $('sTotal').textContent = brl(D.total);
-  $('sFralda').textContent = brl(D.total * (1 - (Number(c.pctDeposito) || .5))) + ' já garantidos em fralda';
+  $('sFralda').textContent = brl(Math.min(simula('Bento').fralda, simula('Eva').fralda)) + ' já garantidos em fralda';
   $('sPend').textContent = brl(D.pendente);
   $('sQtd').textContent = L.length;
   $('sB').textContent = '💙 ' + L.filter(p => p.time === 'Bento').length;
