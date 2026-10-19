@@ -157,20 +157,19 @@ function maskTel(x) {
 }
 const telOk = () => { const n = $('tel').value.replace(/\D/g, '').length; return n === 10 || n === 11; };
 function curVal() {
-  if (form.v === 'outro') { const x = parseFloat($('outro').value); return x > 0 ? Math.round(x * 100) / 100 : 0; }
+  if (form.v === 'outro') { const x = parseFloat(String($('outro').value).replace(',', '.')); return x > 0 ? Math.round(x * 100) / 100 : 0; }
   return form.v;
 }
 function renderRet() {
   const v = curVal(), pct = data ? Number(data.config.pctDeposito) || 0.5 : 0.5;
   $('prize').classList.toggle('off', v === 0);
-  if (v === 0) $('ret').innerHTML = '<b>Palpite na faixa!</b> Você entra no mural e na torcida, mas sem prêmio. 😊';
+  if (form.v === 'outro' && v > 0 && v < 1) { $('ret').innerHTML = '<b>O valor mínimo é R$ 1,00.</b>'; $('send').disabled = true; return; }
+  if (v === 0) $('ret').innerHTML = form.v === 'outro' ? 'Digite o valor que quer apostar (mínimo R$ 1,00).' : '<b>Palpite na faixa!</b> Você entra no mural e na torcida, mas sem prêmio. 😊';
   else {
-    const bruto = v * 2.5, dep = form.p === 'Tudo em fralda' ? 0 : bruto * pct;
-    $('ret').innerHTML = `<div class="row"><span>Como o prêmio é calculado</span></div>
-      <em style="margin:2px 0 8px;font-size:13px;color:var(--ink)">Exemplo: o bolão juntou R$ 500 e o seu time apostou R$ 200 no total. Cada R$ 10 apostados viram R$ 25.</em>
-      <div class="row"><span>Nesse exemplo, com ${brl(v)} você levaria</span></div>
-      <div class="row"><span class="big num">${brl(dep)}</span><span class="fr num">+ ${brl(bruto - dep)} em fralda</span></div>
-      <em>O valor real depende de quanto o bolão juntar até a revelação.</em>`;
+    const dep = form.p === 'Tudo em fralda' ? 0 : v * pct, fr = v - dep;
+    $('ret').innerHTML = `<div class="row"><span>Se você acertar, recebe <b>no mínimo</b></span></div>
+      <div class="row">${dep ? `<span class="big num">${brl(dep)}</span><span class="fr num">+ ${brl(fr)} em fralda</span>` : `<span class="big num" style="color:var(--mint)">${brl(fr)} em fralda</span>`}</div>
+      <em style="font-size:13px;color:var(--ink);margin-top:8px">É a sua aposta de ${brl(v)} de volta. O dinheiro de quem apostar no time errado é dividido entre quem acertou, então seu prêmio só aumenta a partir daí.</em>`;
   }
   $('send').disabled = sending || !($('nome').value.trim().length >= 2 && telOk() && form.s);
 }
@@ -220,7 +219,7 @@ $('tel').addEventListener('input', e => { e.target.value = maskTel(e.target.valu
 
 $('send').onclick = async () => {
   const v = curVal();
-  if (form.v === 'outro' && !v) { $('err').textContent = 'Digite um valor ou escolha "Só palpite".'; return; }
+  if (form.v === 'outro' && v < 1) { $('err').textContent = 'O valor mínimo é R$ 1,00. Se preferir, escolha "Só palpite".'; return; }
   if (v > 5000) { $('err').textContent = 'O valor máximo é R$ 5.000.'; return; }
   $('err').textContent = ''; sending = true; $('send').textContent = 'Enviando…'; renderRet();
   try {
